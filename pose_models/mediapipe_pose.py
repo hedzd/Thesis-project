@@ -65,10 +65,14 @@ class mediapipe_pose:
         mp_pose = mp.solutions.pose
         pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 
-        cap = cv2.VideoCapture(in_path)
+        try:
+            cap = cv2.VideoCapture(in_path)
+        except:
+            print('corrupted file')
 
         if cap.isOpened() == False:
-            raise Exception("Error opening video stream or file")
+            return None
+        #     raise Exception("Error opening video stream or file")
 
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))

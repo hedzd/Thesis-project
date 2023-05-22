@@ -14,6 +14,7 @@ class make_skeleton_dataset():
         self.df = pd.read_csv(self.csv_path)
         self.csv_columns = ['file_name','label','keypoints']
         self.dataset = []
+        self.num_corrupted = 0
         new_csv_path = './train'
         if not os.path.exists(new_csv_path):    
             os.mkdir(new_csv_path)
@@ -48,19 +49,26 @@ class make_skeleton_dataset():
     def make_dataset(self):
         video_names = self.tarfile_extractor(self.tarfile_path)
         print('extraction complete')
-
+        
+        num_processed = 0
         for video_name in video_names[1:]:
             name = video_name.split('/')[-1]
             print(f'video name: {name}')
             keypoints = self.pose_extractor(name)
+            if keypoints == None:
+                print(f'skip file {name}')
+                self.num_corrupted += 1
+                continue
 
-            file_name = re.sub('_\d{6}_\d{6}.mp4$', ' ', name)
+            file_name = re.sub('_\d{6}_\d{6}.mp4$', '', name)
+            print(file_name)
             row = self.df[self.df['youtube_id'] == file_name]
             print(row)
             video_label = row['label'].iloc[0]
             
             self.dataset.append({'file_name': file_name,'label': video_label,'keypoints': keypoints})
-            break
-        
+            num_processed += 1
+            print(f'Progress = {num_processed/len(video_names[1:])}%')
+
         #TODO: filename
         self.save_dataset('./train/part_0.csv', self.dataset)
