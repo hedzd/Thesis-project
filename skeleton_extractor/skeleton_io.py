@@ -3,6 +3,7 @@ from pose_models.mediapipe_pose import mediapipe_pose
 import pandas as pd
 import csv
 import os
+import re
 
 class make_skeleton_dataset():
     def __init__(self) -> None:
@@ -53,9 +54,7 @@ class make_skeleton_dataset():
             print(f'video name: {name}')
             keypoints = self.pose_extractor(name)
 
-            #TODO: handle: ./-7__u70jRAg_000040_000050.mp4  
-            file_name = name.split('.')[0].split('_')[0]
-
+            file_name = re.sub('_\d{6}_\d{6}.mp4$', ' ', name)
             row = self.df[self.df['youtube_id'] == file_name]
             print(row)
             video_label = row['label'].iloc[0]
