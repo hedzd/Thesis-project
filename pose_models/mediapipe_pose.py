@@ -6,7 +6,8 @@ class mediapipe_pose:
     def __init__(self):
         return
 
-    def landmarks_list_to_array(landmark_list):
+    def landmarks_list_to_array(self, landmark_list):
+        # print(landmark_list)
         keypoints = []
         if landmark_list is None:
             new_row = {
@@ -31,8 +32,7 @@ class mediapipe_pose:
         cap = cv2.VideoCapture(in_path)
 
         if cap.isOpened() == False:
-            print("Error opening video stream or file")
-            raise TypeError
+            raise Exception("Error opening video stream or file")
 
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
@@ -68,12 +68,11 @@ class mediapipe_pose:
         cap = cv2.VideoCapture(in_path)
 
         if cap.isOpened() == False:
-            print("Error opening video stream or file")
-            raise TypeError
+            raise Exception("Error opening video stream or file")
 
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
-    
+
         while cap.isOpened():
             ret, image = cap.read()
             if not ret:
@@ -82,7 +81,7 @@ class mediapipe_pose:
             image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
             image.flags.writeable = False
             results = pose.process(image)
-            array = self.landmarks_list_to_array(results)
+            array = self.landmarks_list_to_array(results.pose_landmarks)
             frames_keypoints.append(array)
 
         pose.close()
