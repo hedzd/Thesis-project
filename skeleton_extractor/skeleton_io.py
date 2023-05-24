@@ -6,16 +6,9 @@ import re
 
 class make_skeleton_dataset():
     def __init__(self, videos_path) -> None:
-        # self.tarfile_path = '/Users/hediehpourghasem/Downloads/part_0.tar.gz'
         self.videos_path = videos_path
-        # self.csv_path = '/Users/hediehpourghasem/Downloads/train.csv'
         self.mediapipe = mediapipe_pose()
-        # self.df = pd.read_csv(csv_path)
         self.csv_columns = ['file_name','label','keypoints', 'num_nan_frames', 'num_frames']
-        # self.dataset = []
-        # new_csv_path = './train'
-        # if not os.path.exists(new_csv_path):    
-        #     os.mkdir(new_csv_path)
         self.corrupted_files = []
         self.num_processed = 0
 

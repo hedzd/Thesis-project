@@ -10,10 +10,10 @@ class mediapipe_pose:
         # print(landmark_list)
         keypoints = []
         if landmark_list is None:
-            for i in range(self.num_points):
-                new_row = {
-                    np.nan
-                }
+            # for i in range(self.num_points):
+            new_row = {
+                np.nan
+            }
             keypoints.append(new_row)
         else:
             for data_point in landmark_list.landmark:
