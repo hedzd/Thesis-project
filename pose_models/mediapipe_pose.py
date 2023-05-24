@@ -4,15 +4,16 @@ import numpy as np
 
 class mediapipe_pose:
     def __init__(self):
-        return
+        self.num_points = 33
 
     def landmarks_list_to_array(self, landmark_list):
         # print(landmark_list)
         keypoints = []
         if landmark_list is None:
-            new_row = {
-                np.nan
-            }
+            for i in range(self.num_points):
+                new_row = {
+                    np.nan
+                }
             keypoints.append(new_row)
         else:
             for data_point in landmark_list.landmark:
