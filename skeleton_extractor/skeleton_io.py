@@ -12,12 +12,13 @@ class make_skeleton_dataset():
         self.csv_path = '/Users/hediehpourghasem/Downloads/train.csv'
         self.mediapipe = mediapipe_pose()
         self.df = pd.read_csv(self.csv_path)
-        self.csv_columns = ['file_name','label','keypoints']
+        self.csv_columns = ['file_name','label','keypoints', 'num_nan_frames', 'num_frames']
         self.dataset = []
-        self.num_corrupted = 0
         new_csv_path = './train'
         if not os.path.exists(new_csv_path):    
             os.mkdir(new_csv_path)
+        self.corrupted_files = []
+        self.num_processed = 0
 
     def tarfile_extractor(self, tarfile_path):
         tarfile_name = tarfile_path.split('/')[-1]
@@ -31,8 +32,8 @@ class make_skeleton_dataset():
     def pose_extractor(self, video_name):
         video_path = self.videos_path + '/' + video_name
         print(video_path)
-        keypoints_list = self.mediapipe.extract_pose_keypoints(video_path)
-        return keypoints_list
+        keypoints_list, num_none = self.mediapipe.extract_pose_keypoints(video_path)
+        return keypoints_list, num_none
 
     def save_dataset(self, path, dict_data):
         print(path)
@@ -50,25 +51,27 @@ class make_skeleton_dataset():
         video_names = self.tarfile_extractor(self.tarfile_path)
         print('extraction complete')
         
-        num_processed = 0
+        self.num_processed = 0
         for video_name in video_names[1:]:
             name = video_name.split('/')[-1]
             print(f'video name: {name}')
-            keypoints = self.pose_extractor(name)
+            keypoints, num_none = self.pose_extractor(name)
             if keypoints == None:
                 print(f'skip file {name}')
-                self.num_corrupted += 1
+                self.corrupted_files.append(name)
                 continue
 
             file_name = re.sub('_\d{6}_\d{6}.mp4$', '', name)
-            print(file_name)
+            # print(file_name)
             row = self.df[self.df['youtube_id'] == file_name]
             print(row)
             video_label = row['label'].iloc[0]
             
-            self.dataset.append({'file_name': file_name,'label': video_label,'keypoints': keypoints})
-            num_processed += 1
-            print(f'Progress = {num_processed/len(video_names[1:])}%')
+            new_row = {'file_name': file_name,'label': video_label,'keypoints': keypoints,
+                                 'num_nan_frames': num_none, 'num_frames': len(keypoints)}
+            self.dataset.append(new_row)
+            self.num_processed += 1
+            print(f'Progress = {self.num_processed/len(video_names[1:])}%')
 
         #TODO: filename
         self.save_dataset('./train/part_0.csv', self.dataset)

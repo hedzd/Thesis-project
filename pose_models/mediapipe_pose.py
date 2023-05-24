@@ -71,12 +71,12 @@ class mediapipe_pose:
             print('corrupted file')
 
         if cap.isOpened() == False:
-            return None
+            return None, 0
         #     raise Exception("Error opening video stream or file")
 
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
-
+        num_none = 0
         while cap.isOpened():
             ret, image = cap.read()
             if not ret:
@@ -85,10 +85,12 @@ class mediapipe_pose:
             image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
             image.flags.writeable = False
             results = pose.process(image)
+            if results.pose_landmarks is None:
+                num_none += 1
             array = self.landmarks_list_to_array(results.pose_landmarks)
             frames_keypoints.append(array)
 
         pose.close()
         cap.release()
  
-        return frames_keypoints
+        return frames_keypoints, num_none
