@@ -43,15 +43,15 @@ class file_io():
         # tarfile_addr = '/Users/hediehpourghasem/Downloads/part_0.tar.gz'
 
         # make csv dataset with keypoints
-        self.msd.make_dataset(tarfile_addr, csv_path, new_csv_path)
+            self.msd.make_dataset(tarfile_addr, csv_path, new_csv_path)
 
-        #remove videos
-        os.remove(tarfile_addr)
-        try:
-            shutil.rmtree(self.videos_path)
-            print("videos directory is removed successfully")
-        except OSError as x:
-            print("Error occured: %s : %s" % (self.videos_path, x.strerror))
+            #remove videos
+            os.remove(tarfile_addr)
+            try:
+                shutil.rmtree(self.videos_path)
+                print("videos directory is removed successfully")
+            except OSError as x:
+                print("Error occured: %s : %s" % (self.videos_path, x.strerror))
 
     def train_dataset(self):
         csv_path = 'text_dataset/train.csv'
