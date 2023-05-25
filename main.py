@@ -7,5 +7,5 @@ if __name__ == '__main__':
 
     f = file_io(txt_files_dir)
     f.train_dataset()
-    # print(f'number of corrupted files: {len(msd.corrupted_files)}')
-    # print(f'number of processed files: {msd.num_processed}')
+    print(f'number of corrupted files: {len(f.msd.corrupted_files)}')
+    print(f'number of processed files: {f.msd.num_processed}')

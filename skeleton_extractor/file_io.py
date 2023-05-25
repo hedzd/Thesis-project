@@ -39,16 +39,19 @@ class file_io():
             print('starting download')
             self.download_file(tarfile_url, tarfile_addr)
 
-            # make csv dataset with keypoints
-            self.msd.make_dataset(tarfile_addr, csv_path, new_csv_path)
+        # For test
+        # tarfile_addr = '/Users/hediehpourghasem/Downloads/part_0.tar.gz'
 
-            #remove videos
-            os.remove(tarfile_addr)
-            try:
-                shutil.rmtree(self.videos_path)
-                print("videos directory is removed successfully")
-            except OSError as x:
-                print("Error occured: %s : %s" % (self.videos_path, x.strerror))
+        # make csv dataset with keypoints
+        self.msd.make_dataset(tarfile_addr, csv_path, new_csv_path)
+
+        #remove videos
+        os.remove(tarfile_addr)
+        try:
+            shutil.rmtree(self.videos_path)
+            print("videos directory is removed successfully")
+        except OSError as x:
+            print("Error occured: %s : %s" % (self.videos_path, x.strerror))
 
     def train_dataset(self):
         csv_path = 'text_dataset/train.csv'

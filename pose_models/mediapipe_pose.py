@@ -5,9 +5,9 @@ import numpy as np
 class mediapipe_pose:
     def __init__(self):
         self.num_points = 33
+        self.num_channel = 2
 
-    def landmarks_list_to_array(self, landmark_list):
-        # print(landmark_list)
+    def landmarks_list_to_arraydict(self, landmark_list):
         keypoints = []
         if landmark_list is None:
             # for i in range(self.num_points):
@@ -23,6 +23,18 @@ class mediapipe_pose:
                                     'Z': data_point.z,
                                     'Visibility': data_point.visibility,
                                     })
+        return keypoints
+    
+    def landmarks_list_to_array(self, landmark_list):
+        keypoints = []
+        if landmark_list is None:
+            keypoints = np.empty((self.num_channel*self.num_points))
+            keypoints[:] = np.nan
+        else:
+            for data_point in landmark_list.landmark:
+                keypoints.append(data_point.x)
+                keypoints.append(data_point.y)
+            keypoints = np.array(keypoints)
         return keypoints
 
     def save_extract_pose(self, in_path, out_path): 
@@ -72,8 +84,7 @@ class mediapipe_pose:
             print('corrupted file')
 
         if cap.isOpened() == False:
-            return None, 0
-        #     raise Exception("Error opening video stream or file")
+            return True, None, 0
 
         frame_width = int(cap.get(3))
         frame_height = int(cap.get(4))
@@ -91,7 +102,8 @@ class mediapipe_pose:
             array = self.landmarks_list_to_array(results.pose_landmarks)
             frames_keypoints.append(array)
 
+        frames_keypoints = np.array(frames_keypoints)
         pose.close()
         cap.release()
  
-        return frames_keypoints, num_none
+        return False, frames_keypoints, num_none
