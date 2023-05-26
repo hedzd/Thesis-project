@@ -39,10 +39,10 @@ class file_io():
             print('starting download')
             self.download_file(tarfile_url, tarfile_addr)
 
-        # For test
-        # tarfile_addr = '/Users/hediehpourghasem/Downloads/part_0.tar.gz'
+            # For test
+            # tarfile_addr = '/Users/hediehpourghasem/Downloads/part_0.tar.gz'
 
-        # make csv dataset with keypoints
+            # make csv dataset with keypoints
             self.msd.make_dataset(tarfile_addr, csv_path, new_csv_path)
 
             #remove videos
