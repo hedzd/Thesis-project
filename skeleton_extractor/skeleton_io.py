@@ -42,7 +42,7 @@ class make_skeleton_dataset():
         file.extractall(self.videos_path)
         file.close()
         print(f'File {tarfile_name} sucessfully extracted')
-        return video_names
+        return video_names, tarfile_name
 
     def pose_extractor(self, video_name):
         video_path = self.videos_path + '/' + video_name
@@ -65,7 +65,7 @@ class make_skeleton_dataset():
         pickle.dump((dict_data), open(path + '.pkl', 'ab'))
 
     def make_dataset(self, tarfile_path, csv_path, new_csv_path):
-        video_names = self.tarfile_extractor(tarfile_path)
+        video_names, tarfile_name = self.tarfile_extractor(tarfile_path)
         print('extraction complete')
         df = pd.read_csv(csv_path)
         
@@ -113,7 +113,7 @@ class make_skeleton_dataset():
             else:
                 self.num_eliminated +=1
             
-            print(f'Progress = {(self.num_eliminated+self.num_processed)*100/len(video_names[1:])}%')
+            print(f'File = {tarfile_name} , Progress = {(self.num_eliminated+self.num_processed)*100/len(video_names[1:])}%')
         
         # Uncomment for saving csv
         # new_csv_addr = new_csv_path + '/' + tarfile_path.split('/')[-1].split('.')[0] + '.csv'
