@@ -76,6 +76,7 @@ class make_skeleton_dataset():
         numframes_list = []
 
         self.num_processed = 0
+        self.num_eliminated = 0
         for video_name in video_names[1:]:
             name = video_name.split('/')[-1]
             print(f'video name: {name}')
@@ -90,6 +91,7 @@ class make_skeleton_dataset():
                 if is_corrupted:
                     print(f'skip file {name}')
                     self.corrupted_files.append(name)
+                    self.num_processed += 1
                     continue
 
                 print(row)
@@ -111,7 +113,7 @@ class make_skeleton_dataset():
             else:
                 self.num_eliminated +=1
             
-            print(f'Progress = {(self.num_eliminated+self.num_processed+len(self.corrupted_files))*100/len(video_names[1:])}%')
+            print(f'Progress = {(self.num_eliminated+self.num_processed)*100/len(video_names[1:])}%')
         
         # Uncomment for saving csv
         # new_csv_addr = new_csv_path + '/' + tarfile_path.split('/')[-1].split('.')[0] + '.csv'
