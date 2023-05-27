@@ -32,8 +32,12 @@ class file_io():
 
         for line in Lines:
             tarfile_url = line.strip() 
-            print(f'downloading {tarfile_url}')
             tarfile_name = tarfile_url.split('/')[-1]
+            pickle_name = new_csv_path + '/' + tarfile_name.split('.')[0] + '.pkl'
+            if os.path.isfile(pickle_name):
+                continue
+
+            print(f'downloading {tarfile_url}')
             tarfile_addr = self.tar_path + '/' + tarfile_name
             print(tarfile_addr)
             print('starting download')
