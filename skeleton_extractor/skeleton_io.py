@@ -27,7 +27,7 @@ class make_skeleton_dataset():
        'making sushi', 'exercising with an exercise ball',
        'making a sandwich', 'faceplanting', 'garbage collecting',
        'stomping grapes', 'shooting goal (soccer)', 'drawing',
-       'cleaning pool', 'cracking neck', 'breading or breadcrumbing',
+       'cleaning pool', 'cracking neck',
        'sign language interpreting', 'peeling potatoes', 'changing wheel',
        'doing laundry', 'doing aerobics', 'tossing coin', 'making a cake',
        'tossing salad', 'pushing wheelchair', 'slapping',
@@ -77,7 +77,7 @@ class make_skeleton_dataset():
 
         self.num_processed = 0
         self.num_eliminated = 0
-        for video_name in video_names[1:]:
+        for video_name in video_names[1:20]:
             name = video_name.split('/')[-1]
             print(f'video name: {name}')
 

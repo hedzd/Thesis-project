@@ -93,6 +93,10 @@ class mediapipe_pose:
             ret, image = cap.read()
             if not ret:
                 break
+            
+            # print(f'before resolution: {image.shape}')
+            image = cv2.resize(image,(340,256),fx=0,fy=0, interpolation = cv2.INTER_CUBIC)
+            # print(f'after resolution: {image.shape}')
 
             image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
             image.flags.writeable = False
