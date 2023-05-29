@@ -13,27 +13,20 @@ class make_skeleton_dataset():
         self.corrupted_files = []
         self.num_processed = 0
         self.num_eliminated = 0
-        self.keep_labels =  ['taking a shower', 'tying bow tie', 'using segway', 'yawning',
-       'sniffing', 'shredding paper', 'cooking on campfire', 'digging',
-       'drinking shots', 'blowing leaves', 'unloading truck',
-       'springboard diving', 'swinging legs', 'drumming fingers',
-       'bending metal', 'applauding', 'climbing a rope',
-       'recording music', 'grinding meat', 'whistling', 'exercising arm',
-       'jogging', 'news anchoring', 'water sliding', 'reading newspaper',
-       'rock scissors paper', 'sharpening knives', 'moving furniture',
-       'making tea', 'washing hair', 'building shed', 'plastering',
-       'running on treadmill', 'holding snake', 'waiting in line',
-       'bee keeping', 'building cabinet', 'gargling', 'laying bricks',
-       'making sushi', 'exercising with an exercise ball',
-       'making a sandwich', 'faceplanting', 'garbage collecting',
-       'stomping grapes', 'shooting goal (soccer)', 'drawing',
-       'cleaning pool', 'cracking neck',
-       'sign language interpreting', 'peeling potatoes', 'changing wheel',
-       'doing laundry', 'doing aerobics', 'tossing coin', 'making a cake',
-       'tossing salad', 'pushing wheelchair', 'slapping',
-       'cooking sausages', 'hockey stop', 'playing kickball', 'spraying',
-       'strumming guitar', 'sword fighting', 'playing flute',
-       'riding mule', 'skiing crosscountry', 'massaging feet']
+        self.keep_labels =  ['riding mechanical bull', 'tying bow tie', 'pull ups', 
+                             'bench pressing', 'riding or walking with horse', 
+                             'playing tennis', 'presenting weather forecast', 
+                             'shearing sheep', 'crawling baby', 'bowling', 
+                             'clapping', 'cracking neck', 'high jump', 
+                             'archery', 'hammer throw', 'bouncing on trampoline', 
+                             'climbing a rope', 'recording music', 'grinding meat', 
+                             'running on treadmill', 'robot dancing',
+                             'dribbling basketball', 'dunking basketball', 'kicking soccer ball', 
+                             'riding a bike ', 'jumping into pool', 'playing violin', 
+                             'playing drums', 'playing ukulele', 'skiing slalom', 
+                             'hockey stop', 'high kick', 'dancing macarena', 
+                             'hurdling', 'pole vault', 'disc golfing', 'jogging', 
+                             'doing aerobics', 'sword fighting']
 
     def tarfile_extractor(self, tarfile_path):
         tarfile_name = tarfile_path.split('/')[-1]
@@ -77,7 +70,7 @@ class make_skeleton_dataset():
 
         self.num_processed = 0
         self.num_eliminated = 0
-        for video_name in video_names[1:20]:
+        for video_name in video_names[1:]:
             name = video_name.split('/')[-1]
             print(f'video name: {name}')
 

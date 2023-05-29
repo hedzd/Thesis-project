@@ -5,7 +5,7 @@ import numpy as np
 class mediapipe_pose:
     def __init__(self):
         self.num_points = 33
-        self.num_channel = 2
+        self.num_channel = 3
 
     def landmarks_list_to_arraydict(self, landmark_list):
         keypoints = []
@@ -30,10 +30,15 @@ class mediapipe_pose:
         if landmark_list is None:
             keypoints = np.empty((self.num_channel*self.num_points))
             keypoints[:] = np.nan
+            # keypoints = np.array(np.nan)
         else:
             for data_point in landmark_list.landmark:
-                keypoints.append(data_point.x)
-                keypoints.append(data_point.y)
+                if data_point.visibility < 0.5:
+                    keypoints.extend([0, 0, 0])
+                else:
+                    keypoints.append(data_point.x)
+                    keypoints.append(data_point.y)
+                    keypoints.append(data_point.visibility)
             keypoints = np.array(keypoints)
         return keypoints
 
