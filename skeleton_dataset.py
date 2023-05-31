@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import shutil
 
 class SkeletonConfig:
     mode: str = 'train'
@@ -7,6 +8,11 @@ class SkeletonConfig:
     save_dir: str = ''
     filename: str = ''
     nan_frame_tresh: float = 0.5
+
+def unzip_pkls():
+    zip_path = ""
+    extract_to = ""
+    shutil.unpack_archive(zip_path, extract_to)
 
 def proc_gait_data(config: SkeletonConfig = SkeletonConfig()):
     result_df = pd.DataFrame()
@@ -25,5 +31,7 @@ def proc_gait_data(config: SkeletonConfig = SkeletonConfig()):
 
             result_df = result_df.append(df1)
     
+    print("Number of samples per labels in final dataset:")
+    print(result_df['label'].value_counts())
     result_df.to_pickle(config.save_dir + config.filename + '.pkl')  
 

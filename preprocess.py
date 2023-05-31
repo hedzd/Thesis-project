@@ -16,14 +16,8 @@ def repeat_array_to_length(arr, target_length, axis=None):
 
 def proc_gait_data(load_dir: str, save_dir: str, filename: str="processed.pkl", 
         config: ProcessingConfig = ProcessingConfig()) -> None:
-    """ Processes Raw dataset (pickle file) provided by MediaPose
-
-    Args:
-        load_dir (str): CSV raw data directory to be loaded. It must all parts of the file directory, including its name too.
-        save_dir (str): Where to save the processed file.
-        filename (str, optional): Filename to store processed file with. Default to processed.pkl.
-        config (ProcessingGaitConfig, optional): configuration to process gait data with.
-    """
+    """ Processes Raw dataset (pickle file) provided by MediaPipe """
+    
     num_features = 3
     num_nodes = 33
 
