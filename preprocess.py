@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+import os
+import pickle
 
 class ProcessingConfig:
     num_per_class: int = None
@@ -8,17 +10,17 @@ class ProcessingConfig:
     max_frame: int = 300
     filter_visibility: bool = False
 
-def repeat_array_to_length(arr, target_length, axis=None):
-    repeats = int(np.ceil(target_length / arr.shape[axis]))
+def repeat_array_to_length(arr, target_length):
+    repeats = int(np.ceil(target_length / arr.shape[0]))
     repeated_arr = np.tile(arr, (repeats, 1))
     result = repeated_arr[:target_length,:]
     return result
 
-def proc_gait_data(load_dir: str, save_dir: str, filename: str="processed.pkl", 
+def proc_data(load_dir: str, save_dir: str, filename: str="processed.pkl", 
         config: ProcessingConfig = ProcessingConfig()) -> None:
     """ Processes Raw dataset (pickle file) provided by MediaPipe """
-    
-    num_features = 3
+
+    num_features = 2
     num_nodes = 33
 
     with open(load_dir, "rb") as f:
@@ -55,13 +57,14 @@ def proc_gait_data(load_dir: str, save_dir: str, filename: str="processed.pkl",
 
     for idx, r in enumerate(raw_data):
         # Eliminate completely nan frames
-        if filter_nan_frames:
+        if config.filter_nan_frames:
             r = r[~np.isnan(r).any(axis=1), :]
 
         # Padding frames
-        r = repeat_array_to_length(r, config.max_frame, 1)
+        r = repeat_array_to_length(r, config.max_frame)
         
         sample_feature = np.stack(np.split(r, num_nodes, axis=1), axis=1) # T, V, C
+        print(sample_feature.shape)
 
         data[idx, :] = sample_feature
 
