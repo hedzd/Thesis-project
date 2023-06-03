@@ -13,7 +13,7 @@ def unzip_pkls(zip_path: str, extract_to: str):
     shutil.unpack_archive(zip_path, extract_to)
     print(f'Pickle files unzipped in {extract_to}')
 
-def proc_gait_data(config: SkeletonConfig = SkeletonConfig()):
+def proc_pkls(config: SkeletonConfig = SkeletonConfig()):
     result_df = pd.DataFrame()
 
     for filename in os.listdir(config.load_dir):

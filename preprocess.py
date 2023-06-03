@@ -76,4 +76,21 @@ def proc_data(load_dir: str, save_dir: str, filename: str="processed.pkl",
         pickle.dump((data, labels, names), f)
 
 
+def fake_test_val():
+    with open('/Users/hediehpourghasem/Documents/STP-Gait-main/final/train_ds.pkl', "rb") as f:
+        x, labels, names = pickle.load(f)
     
+    test_x = x[1000:1100,:]
+    test_labels = labels[1000:1100]
+    test_names = names[1000:1100]
+
+    with open('./wtf_ds.pkl', 'wb') as f:
+        pickle.dump((test_x, test_labels, test_names), f)
+
+    # val_x = x[5000:5500,:]
+    # val_labels = labels[5000:5500]
+    # val_names = names[5000:5500]
+
+    # with open('final/val_ds.pkl', 'wb') as f:
+    #     pickle.dump((val_x, val_labels, val_names), f)
+
