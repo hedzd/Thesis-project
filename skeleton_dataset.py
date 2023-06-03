@@ -12,7 +12,7 @@ def unzip_pkls(zip_path: str, extract_to: str):
     shutil.unpack_archive(zip_path, extract_to)
     print(f'Pickle files unzipped in {extract_to}')
 
-def proc_pkls(load_dir, filename, save_dir='./final', nan_frame_tresh = None):
+def proc_pkls(load_dir, final_filename, save_dir='./final', nan_frame_tresh = None):
     result_df = pd.DataFrame()
 
     for filename in os.listdir(load_dir):
@@ -32,8 +32,9 @@ def proc_pkls(load_dir, filename, save_dir='./final', nan_frame_tresh = None):
     result_df = result_df.reset_index(drop=True)
 
     print("Number of samples per labels in final dataset:")
+    pd.set_option("display.max_rows", None)
     print(result_df['label'].value_counts(ascending=True))
     if not os.path.exists(save_dir):    
             os.mkdir(save_dir)
-    result_df.to_pickle(save_dir + '/' + filename + '.pkl')  
+    result_df.to_pickle(save_dir + '/' + final_filename + '.pkl')  
 
