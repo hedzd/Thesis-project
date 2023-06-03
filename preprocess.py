@@ -28,7 +28,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str="processed.pkl",
 
     # Eliminate classes with too few sample data
     if config.min_sample_thresh != None:
-        v = df.label.value_counts()
+        v = df.label.value_counts(ascending=True)
         df = df[df.label.isin(v.index[v.gt(config.min_sample_thresh)])].reset_index(drop=True)
 
     # Set num data per class
@@ -64,7 +64,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str="processed.pkl",
         r = repeat_array_to_length(r, config.max_frame)
         
         sample_feature = np.stack(np.split(r, num_nodes, axis=1), axis=1) # T, V, C
-        print(sample_feature.shape)
+        # print(sample_feature.shape)
 
         data[idx, :] = sample_feature
 
@@ -76,16 +76,16 @@ def proc_data(load_dir: str, save_dir: str, filename: str="processed.pkl",
         pickle.dump((data, labels, names), f)
 
 
-def fake_test_val():
-    with open('/Users/hediehpourghasem/Documents/STP-Gait-main/final/train_ds.pkl', "rb") as f:
-        x, labels, names = pickle.load(f)
+# def fake_test_val():
+#     with open('/Users/hediehpourghasem/Documents/STP-Gait-main/final/train_ds.pkl', "rb") as f:
+#         x, labels, names = pickle.load(f)
     
-    test_x = x[1000:1100,:]
-    test_labels = labels[1000:1100]
-    test_names = names[1000:1100]
+#     test_x = x[1000:1100,:]
+#     test_labels = labels[1000:1100]
+#     test_names = names[1000:1100]
 
-    with open('./wtf_ds.pkl', 'wb') as f:
-        pickle.dump((test_x, test_labels, test_names), f)
+#     with open('./wtf_ds.pkl', 'wb') as f:
+#         pickle.dump((test_x, test_labels, test_names), f)
 
     # val_x = x[5000:5500,:]
     # val_labels = labels[5000:5500]

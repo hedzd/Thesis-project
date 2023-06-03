@@ -2,6 +2,7 @@ from skeleton_extractor import make_skeleton_dataset
 from skeleton_extractor import file_io
 from skeleton_dataset import unzip_pkls, proc_pkls
 from preprocess import proc_data, fake_test_val
+import sys
 
 if __name__ == '__main__':
     # Change this dir if needed
@@ -14,11 +15,13 @@ if __name__ == '__main__':
 
     # Unzip
     # unzip_pkls(zip_path = "/Users/hediehpourghasem/Downloads/train.zip", extract_to = ".")
-    
-    # Change config if needed
-    # proc_pkls()
+    log = open("dfcontent.log", "a")
+    sys.stdout = log
+
+    # Append all dfs
+    proc_pkls(load_dir='./train', filename='train_ds', save_dir='./final', nan_frame_tresh = 0.5)
 
     # Preprocess
-    # proc_data(load_dir='final/train_ds.pkl', save_dir='final', filename = 'processed.pkl')
+    proc_data(load_dir='final/train_ds.pkl', save_dir='./final', filename = 'train_processed.pkl')
 
-    fake_test_val()
+    # fake_test_val()
