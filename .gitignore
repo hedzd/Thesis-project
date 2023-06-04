@@ -134,6 +134,8 @@ dmypy.json
 
 results/*
 train/*
+test/*
+val/*
 final/*
 *.zip
 

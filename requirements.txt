@@ -1,6 +1,6 @@
-mediapipe
-opencv-python=4.7.0
-numpy=1.22.4
 boto=2.49.0
+pandas=2.0.2
 requests=2.31.0
-pandas=1.5.3
+opencv-python=4.7.0.72
+numpy=1.24.3
+mediapipe=0.10.0
