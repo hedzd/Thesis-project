@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     # Append all dfs
     proc_pkls(load_dir='./train', final_filename='train_ds', save_dir='./final', nan_frame_tresh = 0.5)
-
+   
     # Preprocess
     proc_data(load_dir='final/train_ds.pkl', save_dir='./final', filename = 'train_processed.pkl')
 

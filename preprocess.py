@@ -16,20 +16,25 @@ def repeat_array_to_length(arr, target_length):
     result = repeated_arr[:target_length,:]
     return result
 
-def proc_data(load_dir: str, save_dir: str, filename: str="processed.pkl", 
+def proc_data(load_dir: str, save_dir: str, filename: str, 
         config: ProcessingConfig = ProcessingConfig()) -> None:
     """ Processes Raw dataset (pickle file) provided by MediaPipe """
 
-    num_features = 2
+    if config.filter_visibility:
+        num_features = 2
+    else:
+        num_features = 2
     num_nodes = 33
 
     with open(load_dir, "rb") as f:
         df = pd.read_pickle(f)
+    print('pickle opened')
 
     # Eliminate classes with too few sample data
     if config.min_sample_thresh != None:
         v = df.label.value_counts(ascending=True)
         df = df[df.label.isin(v.index[v.gt(config.min_sample_thresh)])].reset_index(drop=True)
+        print(f'classes with samples fewer than {config.min_sample_thres} eliminated')
 
     # Set num data per class
     if config.num_per_class != None:
@@ -43,7 +48,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str="processed.pkl",
             else:
                 new_df = pd.concat([new_df, df_l.sample(n = config.num_per_class, random_state=12345)])
         df = new_df
-
+        print(f'Set all sample numbers to {config.num_per_class}')
     
     raw_data = df['keypoints'].values    
     labels = df['label'].values
@@ -67,13 +72,17 @@ def proc_data(load_dir: str, save_dir: str, filename: str="processed.pkl",
         # print(sample_feature.shape)
 
         data[idx, :] = sample_feature
+    
+    print('Shape change to N,T,V,C format')
 
     # Eliminating visibility
     if config.filter_visibility:
         data = data[:,:,:,:2]
+        print('visibility filtered')
 
     with open(os.path.join(save_dir, filename), 'wb') as f:
         pickle.dump((data, labels, names), f)
+    print('processed file saved')
 
 
 # def fake_test_val():
