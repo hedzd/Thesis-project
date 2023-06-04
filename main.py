@@ -20,7 +20,7 @@ if __name__ == '__main__':
     sys.stdout = log
     # Append all dfs
     proc_pkls(load_dir='./train', final_filename='train_ds', save_dir='./final', nan_frame_tresh = 0.5)
-    sys.stdout = sys.__stdout__
+    # sys.stdout = sys.__stdout__
 
     # Preprocess
     print('preprocess started')
