@@ -93,20 +93,21 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
     #     pickle.dump((data, labels, names), f)
 
     #GPT way
-    # with gzip.open(os.path.join(save_dir, filename+'.gz'), 'wb') as f:
-    #     pickle.dump((data, labels), f)
+    with gzip.open(os.path.join(save_dir, filename+'.gz'), 'wb') as f:
+        pickle.dump((data, labels), f)
     
-    max_bytes = 2**31 - 1
-    print(type(data))
-    data = bytearray(data)
+    #My way
+    # max_bytes = 2**31 - 1
+    # print(type(data))
+    # data = bytearray(data)
 
-    ## write
-    bytes_out = pickle.dumps((data, labels))
-    print('converted to bytes')
-    with open(os.path.join(save_dir, filename), 'wb') as f_out:
-        for idx in range(0, len(bytes_out), max_bytes):
-            f_out.write(bytes_out[idx:idx+max_bytes])
-            print(idx)
+    # ## write
+    # bytes_out = pickle.dumps((data, labels))
+    # print('converted to bytes')
+    # with open(os.path.join(save_dir, filename), 'wb') as f_out:
+    #     for idx in range(0, len(bytes_out), max_bytes):
+    #         f_out.write(bytes_out[idx:idx+max_bytes])
+    #         print(idx)
     print('new pkl file saved')
 
 
