@@ -53,14 +53,17 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
     raw_data = df['keypoints'].values    
     labels = df['label'].values
     names = df['file_name'].values
+    print("read data from pkl")
 
     # Change shape to N, T, V, C
     num_frames = [r.shape[0] for r in raw_data]
     max_frame = config.max_frame
     num_samples = raw_data.shape[0]   
     data = np.zeros((num_samples, max_frame, num_nodes, num_features)) # N, T, V, C
+    print('Make N, T, V, C with zeros')
 
     for idx, r in enumerate(raw_data):
+        print(f'start processing data with index {idx}')
         # Eliminate completely nan frames
         if config.filter_nan_frames:
             r = r[~np.isnan(r).any(axis=1), :]
@@ -72,6 +75,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
         # print(sample_feature.shape)
 
         data[idx, :] = sample_feature
+        print(f'finish processing data with index {idx}')
     
     print(f'Shape change to N,T,V,C format, shape: {data.shape}')
 
@@ -80,9 +84,11 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
         data = data[:,:,:,:2]
         print('visibility filtered')
 
+    print('processed complete')
+    print('start saving new pkl')
     with open(os.path.join(save_dir, filename), 'wb') as f:
         pickle.dump((data, labels, names), f)
-    print('processed file saved')
+    print('new pkl file saved')
 
 
 # def fake_test_val():

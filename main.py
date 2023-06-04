@@ -21,8 +21,9 @@ if __name__ == '__main__':
     # Append all dfs
     proc_pkls(load_dir='./train', final_filename='train_ds', save_dir='./final', nan_frame_tresh = 0.5)
     sys.stdout = sys.__stdout__
-    
-    # Preprocess
-    proc_data(load_dir='final/train_ds.pkl', save_dir='./final', filename = 'train_processed.pkl')
 
+    # Preprocess
+    print('preprocess started')
+    proc_data(load_dir='final/train_ds.pkl', save_dir='./final', filename = 'train_processed.pkl')
+    print('preprocess ended')
     # fake_test_val()
