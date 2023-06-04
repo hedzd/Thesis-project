@@ -23,7 +23,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
     if config.filter_visibility:
         num_features = 2
     else:
-        num_features = 2
+        num_features = 3
     num_nodes = 33
 
     with open(load_dir, "rb") as f:
