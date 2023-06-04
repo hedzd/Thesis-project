@@ -2,14 +2,13 @@ import numpy as np
 import pandas as pd
 import os
 import pickle
-import gzip
 
 class ProcessingConfig:
     num_per_class: int = None
     min_sample_thresh: int = None
     filter_nan_frames: bool = True
     max_frame: int = 300
-    filter_visibility: bool = True
+    filter_visibility: bool = False
 
 def repeat_array_to_length(arr, target_length):
     repeats = int(np.ceil(target_length / arr.shape[0]))
@@ -29,13 +28,13 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
 
     with open(load_dir, "rb") as f:
         df = pd.read_pickle(f)
-    print('pickle opened')
+    print('pickle opened', flush=True)
 
     # Eliminate classes with too few sample data
     if config.min_sample_thresh != None:
         v = df.label.value_counts(ascending=True)
         df = df[df.label.isin(v.index[v.gt(config.min_sample_thresh)])].reset_index(drop=True)
-        print(f'classes with samples fewer than {config.min_sample_thres} eliminated')
+        print(f'classes with samples fewer than {config.min_sample_thres} eliminated', flush=True)
 
     # Set num data per class
     if config.num_per_class != None:
@@ -49,19 +48,19 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
             else:
                 new_df = pd.concat([new_df, df_l.sample(n = config.num_per_class, random_state=12345)])
         df = new_df
-        print(f'Set all sample numbers to {config.num_per_class}')
+        print(f'Set all sample numbers to {config.num_per_class}', flush=True)
     
     raw_data = df['keypoints'].values    
     labels = df['label'].values
     # names = df['file_name'].values
-    print("read data from pkl")
+    print("read data from pkl", flush=True)
 
     # Change shape to N, T, V, C
     num_frames = [r.shape[0] for r in raw_data]
     max_frame = config.max_frame
     num_samples = raw_data.shape[0]   
     data = np.zeros((num_samples, max_frame, num_nodes, num_features)) # N, T, V, C
-    print('Make N, T, V, C with zeros')
+    print('Make N, T, V, C with zeros', flush=True)
 
     for idx, r in enumerate(raw_data):
         # print(f'start processing data with index {idx}')
@@ -78,23 +77,23 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
         data[idx, :] = sample_feature
         # print(f'finish processing data with index {idx}')
     
-    print(f'Shape change to N,T,V,C format, shape: {data.shape}')
+    print(f'Shape change to N,T,V,C format, shape: {data.shape}', flush=True)
 
     # Eliminating visibility
     if config.filter_visibility:
         data = data[:,:,:,:2]
-        print('visibility filtered')
+        print('visibility filtered', flush=True)
 
-    print('processed complete')
-    print('start saving new pkl')
+    print('processed complete', flush=True)
+    print('start saving new pkl', flush=True)
 
     #error way
-    # with open(os.path.join(save_dir, filename), 'wb') as f:
-    #     pickle.dump((data, labels, names), f)
+    with open(os.path.join(save_dir, filename), 'wb') as f:
+        pickle.dump((data, labels), f)
 
     #GPT way
-    with gzip.open(os.path.join(save_dir, filename+'.gz'), 'wb') as f:
-        pickle.dump((data, labels), f)
+    # with gzip.open(os.path.join(save_dir, filename+'.gz'), 'wb') as f:
+    #     pickle.dump((data, labels), f)
     
     #My way
     # max_bytes = 2**31 - 1
@@ -108,7 +107,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
     #     for idx in range(0, len(bytes_out), max_bytes):
     #         f_out.write(bytes_out[idx:idx+max_bytes])
     #         print(idx)
-    print('new pkl file saved')
+    print('new pkl file saved', flush=True)
 
 
 # def fake_test_val():
