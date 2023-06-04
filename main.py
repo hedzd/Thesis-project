@@ -15,12 +15,13 @@ if __name__ == '__main__':
 
     # Unzip
     # unzip_pkls(zip_path = "/Users/hediehpourghasem/Downloads/train.zip", extract_to = ".")
+    
     log = open("dfcontent.log", "a")
     sys.stdout = log
-
     # Append all dfs
     proc_pkls(load_dir='./train', final_filename='train_ds', save_dir='./final', nan_frame_tresh = 0.5)
-   
+    sys.stdout = sys.__stdout__
+    
     # Preprocess
     proc_data(load_dir='final/train_ds.pkl', save_dir='./final', filename = 'train_processed.pkl')
 

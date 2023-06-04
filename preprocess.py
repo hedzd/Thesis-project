@@ -73,7 +73,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
 
         data[idx, :] = sample_feature
     
-    print('Shape change to N,T,V,C format')
+    print(f'Shape change to N,T,V,C format, shape: {data.shape}')
 
     # Eliminating visibility
     if config.filter_visibility:
