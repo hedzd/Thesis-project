@@ -2,13 +2,14 @@ import numpy as np
 import pandas as pd
 import os
 import pickle
+import gzip
 
 class ProcessingConfig:
     num_per_class: int = None
     min_sample_thresh: int = None
     filter_nan_frames: bool = True
     max_frame: int = 300
-    filter_visibility: bool = False
+    filter_visibility: bool = True
 
 def repeat_array_to_length(arr, target_length):
     repeats = int(np.ceil(target_length / arr.shape[0]))
@@ -52,7 +53,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
     
     raw_data = df['keypoints'].values    
     labels = df['label'].values
-    names = df['file_name'].values
+    # names = df['file_name'].values
     print("read data from pkl")
 
     # Change shape to N, T, V, C
@@ -63,7 +64,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
     print('Make N, T, V, C with zeros')
 
     for idx, r in enumerate(raw_data):
-        print(f'start processing data with index {idx}')
+        # print(f'start processing data with index {idx}')
         # Eliminate completely nan frames
         if config.filter_nan_frames:
             r = r[~np.isnan(r).any(axis=1), :]
@@ -75,7 +76,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
         # print(sample_feature.shape)
 
         data[idx, :] = sample_feature
-        print(f'finish processing data with index {idx}')
+        # print(f'finish processing data with index {idx}')
     
     print(f'Shape change to N,T,V,C format, shape: {data.shape}')
 
@@ -86,8 +87,26 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
 
     print('processed complete')
     print('start saving new pkl')
-    with open(os.path.join(save_dir, filename), 'wb') as f:
-        pickle.dump((data, labels, names), f)
+
+    #error way
+    # with open(os.path.join(save_dir, filename), 'wb') as f:
+    #     pickle.dump((data, labels, names), f)
+
+    #GPT way
+    # with gzip.open(os.path.join(save_dir, filename+'.gz'), 'wb') as f:
+    #     pickle.dump((data, labels), f)
+    
+    max_bytes = 2**31 - 1
+    print(type(data))
+    data = bytearray(data)
+
+    ## write
+    bytes_out = pickle.dumps((data, labels))
+    print('converted to bytes')
+    with open(os.path.join(save_dir, filename), 'wb') as f_out:
+        for idx in range(0, len(bytes_out), max_bytes):
+            f_out.write(bytes_out[idx:idx+max_bytes])
+            print(idx)
     print('new pkl file saved')
 
 
