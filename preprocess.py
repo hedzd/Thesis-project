@@ -9,6 +9,7 @@ class ProcessingConfig:
     filter_nan_frames: bool = True
     max_frame: int = 300
     filter_visibility: bool = False
+    filter_labels: list = None
 
 def repeat_array_to_length(arr, target_length):
     repeats = int(np.ceil(target_length / arr.shape[0]))
@@ -34,7 +35,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
     if config.min_sample_thresh != None:
         v = df.label.value_counts(ascending=True)
         df = df[df.label.isin(v.index[v.gt(config.min_sample_thresh)])].reset_index(drop=True)
-        print(f'classes with samples fewer than {config.min_sample_thres} eliminated', flush=True)
+        print(f'classes with samples fewer than {config.min_sample_thresh} eliminated', flush=True)
 
     # Set num data per class
     if config.num_per_class != None:
@@ -50,6 +51,9 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
         df = new_df
         print(f'Set all sample numbers to {config.num_per_class}', flush=True)
     
+    if config.filter_labels != None:
+        df = df[df.label.isin(config.filter_labels) == False].reset_index(drop=True)
+
     raw_data = df['keypoints'].values    
     labels = df['label'].values
     # names = df['file_name'].values

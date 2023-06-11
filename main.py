@@ -24,6 +24,6 @@ if __name__ == '__main__':
 
     # Preprocess
     print('preprocess started')
-    proc_data(load_dir='final/train_ds.pkl', save_dir='./final', filename = 'train_processed.pkl')
+    proc_data(load_dir='/content/drive/MyDrive/ds1/final/train_ds.pkl', save_dir='/content/drive/MyDrive/ds1', filename = 'train_processed.pkl')
     print('preprocess ended')
     # fake_test_val()
