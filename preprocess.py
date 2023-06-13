@@ -93,7 +93,7 @@ def proc_data(load_dir: str, save_dir: str, filename: str,
 
     #error way
     with open(os.path.join(save_dir, filename), 'wb') as f:
-        pickle.dump((data, labels), f)
+        pickle.dump((data, labels), f, protocol=pickle.HIGHEST_PROTOCOL)
 
     #GPT way
     # with gzip.open(os.path.join(save_dir, filename+'.gz'), 'wb') as f:
