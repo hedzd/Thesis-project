@@ -1,14 +1,12 @@
-import argparse
-
 import cv2
 import numpy as np
 import torch
 
 from .with_mobilenet import PoseEstimationWithMobileNet
-from modules.keypoints import extract_keypoints, group_keypoints
-from modules.load_state import load_state
-from modules.pose import Pose, track_poses
-from val import normalize, pad_width
+from .modules.keypoints import extract_keypoints, group_keypoints
+from .modules.load_state import load_state
+from .modules.pose import Pose, track_poses
+from .val import normalize, pad_width
 
 class VideoReader(object):
     def __init__(self, file_name):
@@ -103,13 +101,13 @@ def run_demo(net, image_provider, height_size, cpu, track, smooth, save_filename
             previous_poses = current_poses
         for pose in current_poses:
             pose.draw(img)
-        img = cv2.addWeighted(orig_img, 0.6, img, 0.4, 0)
-        for pose in current_poses:
-            cv2.rectangle(img, (pose.bbox[0], pose.bbox[1]),
-                          (pose.bbox[0] + pose.bbox[2], pose.bbox[1] + pose.bbox[3]), (0, 255, 0))
-            if track:
-                cv2.putText(img, 'id: {}'.format(pose.id), (pose.bbox[0], pose.bbox[1] - 16),
-                            cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255))
+        img = cv2.addWeighted(orig_img, 0.2, img, 0.8, 0)
+        # for pose in current_poses:
+        #     cv2.rectangle(img, (pose.bbox[0], pose.bbox[1]),
+        #                   (pose.bbox[0] + pose.bbox[2], pose.bbox[1] + pose.bbox[3]), (0, 255, 0))
+        #     if track:
+        #         cv2.putText(img, 'id: {}'.format(pose.id), (pose.bbox[0], pose.bbox[1] - 16),
+        #                     cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255))
         
         out.write(img)
 

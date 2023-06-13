@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 
-from modules.keypoints import BODY_PARTS_KPT_IDS, BODY_PARTS_PAF_IDS
-from modules.one_euro_filter import OneEuroFilter
+from .keypoints import BODY_PARTS_KPT_IDS, BODY_PARTS_PAF_IDS
+from .one_euro_filter import OneEuroFilter
 
 
 class Pose:
@@ -52,14 +52,26 @@ class Pose:
             global_kpt_a_id = self.keypoints[kpt_a_id, 0]
             if global_kpt_a_id != -1:
                 x_a, y_a = self.keypoints[kpt_a_id]
-                cv2.circle(img, (int(x_a), int(y_a)), 3, Pose.color, -1)
+                # cv2.circle(img, (int(x_a), int(y_a)), 3, (0,0,255), 2)
+                circle_border_radius = max(2 + 1,
+                                 int(2 * 1.2))
+                cv2.circle(img, (int(x_a), int(y_a)), circle_border_radius, (255,255,255), 2)
+                # Fill color into the circle
+                cv2.circle(img, (int(x_a), int(y_a)), 2,
+                            (0,0,255), 2)
             kpt_b_id = BODY_PARTS_KPT_IDS[part_id][1]
             global_kpt_b_id = self.keypoints[kpt_b_id, 0]
             if global_kpt_b_id != -1:
                 x_b, y_b = self.keypoints[kpt_b_id]
-                cv2.circle(img, (int(x_b), int(y_b)), 3, Pose.color, -1)
+                # cv2.circle(img, (int(x_b), int(y_b)), 3, (0,0,255), 2)
+                circle_border_radius = max(2 + 1,
+                                 int(2 * 1.2))
+                cv2.circle(img, (int(x_b), int(y_b)), circle_border_radius, (255,255,255), 2)
+                # Fill color into the circle
+                cv2.circle(img, (int(x_b), int(y_b)), 2,
+                            (0,0,255), 2)
             if global_kpt_a_id != -1 and global_kpt_b_id != -1:
-                cv2.line(img, (int(x_a), int(y_a)), (int(x_b), int(y_b)), Pose.color, 2)
+                cv2.line(img, (int(x_a), int(y_a)), (int(x_b), int(y_b)), (255,255,255), 2)
 
 
 def get_similarity(a, b, threshold=0.5):
