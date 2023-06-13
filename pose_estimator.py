@@ -20,6 +20,11 @@ def pose_video_extractor(method, input_url):
         mediapipe = mediapipe_pose()
         mediapipe.extrsave_extract_poseact_pose(dl_file_addr, annotated_addr)
 
+    if method == 'openpose':
+        from openpose.demo import extract_pose
+        annotated_addr = f'{out_dir}{file_name}_annotated_op.{file_format}'
+        extract_pose(dl_file_addr, annotated_addr)
+
     up = uploader(annotated_addr)
     up.upload()
 
