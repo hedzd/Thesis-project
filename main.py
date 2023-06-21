@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     #Eval model
     mp = mediapipe_pose()
-    video_file_path = '/Users/hediehpourghasem/Desktop/-5NN5hdIwTc_000036_000046.mp4'
+    video_file_path = '/Users/hediehpourghasem/Desktop/samples/-GCUZmroLF8_000142_000152.mp4'
     _, frames_keypoints, _ = mp.extract_pose_keypoints(video_file_path)
     print(frames_keypoints.shape)
     print('skeleton keypoints extracted')

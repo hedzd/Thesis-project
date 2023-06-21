@@ -10,7 +10,7 @@ model_configs = {'stgcn_uniform': {'model':'stgcn', 'num_c':3, 'weight_func': 'u
                  'mstgcn_spatial': {'model':'mstgcn', 'num_c':3, 'weight_func': 'spatial', 'weight': 'mstgcn_spatial'},
                  'mstgcn_filterv': {'model':'mstgcn', 'num_c':2, 'weight_func': 'spatial', 'weight': 'mstgcn_filterv'}}
 
-classes = ['archery', 'bench pressing', 'bouncing on trampoline', 'bowling' 'clapping',
+classes = ['archery', 'bench pressing', 'bouncing on trampoline', 'bowling', 'clapping',
  'climbing a rope', 'cracking neck', 'crawling baby', 'dancing macarena',
  'disc golfing', 'doing aerobics', 'dribbling basketball',
  'dunking basketball', 'grinding meat', 'hammer throw', 'high jump',
