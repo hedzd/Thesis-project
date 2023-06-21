@@ -78,6 +78,7 @@ class mediapipe_pose:
         out.release()
         print('Mediapipe annotated file successfully saved in {out_path}')
 
+    # use this for action recognition model prediction
     def extract_pose_keypoints(self, in_path):
         frames_keypoints = []
         mp_pose = mp.solutions.pose
