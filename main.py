@@ -35,7 +35,7 @@ if __name__ == '__main__':
     video_file_path = '/Users/hediehpourghasem/Desktop/-5NN5hdIwTc_000036_000046.mp4'
     _, frames_keypoints, _ = mp.extract_pose_keypoints(video_file_path)
     print(frames_keypoints.shape)
-    print('start evaluating model')
-    y_pred, y_pred_class = stgcn_eval(frames_keypoints)
+    print('skeleton keypoints extracted')
+    y_pred, y_pred_class = stgcn_eval(frames_keypoints, 'mstgcn_uniform')
     print(y_pred_class)
     print(y_pred)
